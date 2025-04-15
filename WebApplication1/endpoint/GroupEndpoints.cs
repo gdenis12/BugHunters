@@ -3,6 +3,7 @@ using WebApplication1;
 using WebApplication1.Models;
 using WebApplication1.DTO;
 using Microsoft.AspNetCore.Mvc;
+using static System.Console;
 
 public static class GroupEndpoints
 {
