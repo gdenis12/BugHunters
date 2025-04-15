@@ -30,7 +30,11 @@ public static class GroupEndpoints
         app.MapPost("/api/groups", async (GroupCreationDto dto, AppDbContext db) =>
         {
             var teacher = await db.Teachers.FindAsync(dto.TeacherId);
-            if (teacher is null) return Results.BadRequest("Teacher not found");
+            if (teacher is null) {
+                WriteLine("Teacher not found!");
+                return Results.BadRequest("Teacher not found"); 
+            }
+            
 
             var group = new Group
             {
