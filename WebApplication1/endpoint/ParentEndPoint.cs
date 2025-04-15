@@ -56,7 +56,7 @@ public static class ParentEndpoints
             return Results.Created($"/parents/{parent.Id}", parent);
         });
 
-        // Обновляем parent с изменением его Member и связей со студентами
+        // Update parent including their Member and relationships with students
         routes.MapPut("/parents/{id}", async (int id, [FromBody] ParentUpdateDto dto, AppDbContext db) =>
         {
             var parent = await db.Parents
@@ -69,7 +69,7 @@ public static class ParentEndpoints
             if (dto.ParentTypeId != default)
                 parent.ParentTypeId = dto.ParentTypeId;
 
-            // Обновляем данные Member, если они переданы
+            // Update Member data if provided
             if (dto.Member is not null)
             {
                 if (!string.IsNullOrWhiteSpace(dto.Member.Surname))
@@ -84,10 +84,10 @@ public static class ParentEndpoints
                     parent.Member.Password = SecurityHelper.HashPassword(dto.Member.PlainPassword);
             }
 
-            // Обновляем связи со студентами, только если список передан
+            // Update relationships with students only if the list is provided
             if (dto.StudentIds is not null)
             {
-                // Очищаем связи и добавляем новые
+                // Clear existing relationships and add new ones
                 parent.Students.Clear();
                 if (dto.StudentIds.Any())
                 {

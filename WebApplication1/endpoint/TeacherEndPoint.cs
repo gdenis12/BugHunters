@@ -24,7 +24,7 @@ public static class TeacherEndpoints
 
         app.MapPost("/api/teachers", async ([FromBody] TeacherCreationDto dto, AppDbContext db) =>
         {
-            // Создаём сущность Member и хешируем пароль
+            // Create a Member entity and hash the password
             var member = new Member
             {
                 Surname = dto.Member.Surname,
@@ -61,7 +61,7 @@ public static class TeacherEndpoints
                 teacher.Member.Phone = updated.Member.Phone;
             if (!string.IsNullOrWhiteSpace(updated.Member.Email))
                 teacher.Member.Email = updated.Member.Email;
-            // Если требуется обновление пароля для учителя – можно добавить условие аналогично остальным
+            // If updating teacher's password is required – can add a condition similar to the others
 
             await db.SaveChangesAsync();
             return Results.NoContent();

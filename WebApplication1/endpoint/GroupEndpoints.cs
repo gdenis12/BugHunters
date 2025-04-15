@@ -26,7 +26,7 @@ public static class GroupEndpoints
                 ? Results.Ok(group)
                 : Results.NotFound());
 
-        // Создание группы
+        // Create group
         app.MapPost("/api/groups", async (GroupCreationDto dto, AppDbContext db) =>
         {
             var teacher = await db.Teachers.FindAsync(dto.TeacherId);
@@ -99,7 +99,7 @@ public static class GroupEndpoints
                 var teacher = await db.Teachers.FindAsync(dto.TeacherId);
                 if (teacher is null) return Results.BadRequest("Teacher not found");
                 group.TeacherId = dto.TeacherId;
-                group.Teacher = teacher;  // Обновляем ссылку, если требуется
+                group.Teacher = teacher;  // Update the link if required
             }
 
             await db.SaveChangesAsync();

@@ -9,7 +9,7 @@ namespace WebApplication1.endpoint
     {
         public static void MapEventEndpoints(this WebApplication app)
         {
-            // Получить все события
+            // Get all events
             app.MapGet("/api/events", async (AppDbContext db) =>
                 await db.Events
                     .Include(e => e.EventType)
@@ -17,7 +17,7 @@ namespace WebApplication1.endpoint
                     .Include(e => e.Task)
                     .ToListAsync());
 
-            // Получить событие по id
+            // Get event by id
             app.MapGet("/api/events/{id}", async (int id, AppDbContext db) =>
                 await db.Events
                     .Include(e => e.EventType)
@@ -28,7 +28,7 @@ namespace WebApplication1.endpoint
                     ? Results.Ok(ev)
                     : Results.NotFound());
 
-            // Создать событие через DTO
+            // Create an event using a DTO
             app.MapPost("/api/events", async ([FromBody] EventCreationDto dto, AppDbContext db) =>
             {
                 var ev = new Event
@@ -47,18 +47,18 @@ namespace WebApplication1.endpoint
                 return Results.Created($"/api/events/{ev.Id}", ev);
             });
 
-            // Обновить событие через DTO
+           // Update event using a DTO
             app.MapPut("/api/events/{id}", async (int id, [FromBody] EventUpdateDto dto, AppDbContext db) =>
             {
                 var ev = await db.Events.FindAsync(id);
                 if (ev is null) return Results.NotFound();
 
-                // Если поле не пустое или не равно значению по умолчанию, обновляем
+                // If the field is not empty or not equal to the default value, we update
                 if (!string.IsNullOrWhiteSpace(dto.Name))
                     ev.Name = dto.Name;
                 if (dto.EventTypeId != default)
                     ev.EventTypeId = dto.EventTypeId;
-                if (dto.DateOfStart != default)  // default(DateTime) == 01.01.0001, можно трактовать как «не передано»
+                if (dto.DateOfStart != default)  // Default (Datetime) == 01.01.0001, can be interpreted as "not transmitted"
                     ev.DateOfStart = dto.DateOfStart;
                 if (dto.DurationInMinutes != default)
                     ev.DurationInMinutes = dto.DurationInMinutes;
@@ -72,7 +72,7 @@ namespace WebApplication1.endpoint
             });
 
 
-            // Удалить событие
+            // Delete an event
             app.MapDelete("/api/events/{id}", async (int id, AppDbContext db) =>
             {
                 var ev = await db.Events.FindAsync(id);
@@ -84,11 +84,11 @@ namespace WebApplication1.endpoint
             });
 
             // -------------------------------------------
-            // Эндпоинты для управления задачей (Task) как дочерним элементом события
-            // Все операции выполняются по маршруту /api/events/{eventId}/task
-            // -------------------------------------------
+            // Endpoints to manage a Task as a child element of an Event
+            // All operations are performed at the route /api/events/{eventId}/task
+            // -------------------------------------------------------------------------------------
 
-            // GET: Получить задачу, связанную с событием
+            // GET: Get the task associated with the event
             app.MapGet("/api/events/{eventId}/task", async (int eventId, AppDbContext db) =>
             {
                 var ev = await db.Events
@@ -101,7 +101,7 @@ namespace WebApplication1.endpoint
                     : Results.NotFound($"Task for event {eventId} not found");
             });
 
-            // POST: Создать задачу для события, если её ещё нет
+            // POST: Create a task for the event, if it doesn't already exist
             app.MapPost("/api/events/{eventId}/task", async (int eventId, [FromBody] TaskDto dto, AppDbContext db) =>
             {
                 var ev = await db.Events.Include(e => e.Task)
@@ -111,10 +111,10 @@ namespace WebApplication1.endpoint
                 if (ev.Task is not null)
                     return Results.BadRequest("Task already exists for this event. Use PUT to update.");
 
-                // Создаём новую задачу и устанавливаем связь
+                // Create a new task and establish a relationship
                 var task = new Models.Task
                 {
-                    Id = eventId, // По соглашению ключ задачи совпадает с ключом события
+                    Id = eventId, // By agreement, the key key coincides with the event key
                     Name = dto.Name,
                     DateOfEnding = dto.DateOfEnding,
                     Content = dto.Content,
@@ -126,7 +126,7 @@ namespace WebApplication1.endpoint
                 return Results.Created($"/api/events/{eventId}/task", task);
             });
 
-            // PUT: Обновить задачу для события через DTO
+            // PUT: Update the task for the event using a DTO
             app.MapPut("/api/events/{eventId}/task", async (int eventId, [FromBody] TaskDto dto, AppDbContext db) =>
             {
                 var ev = await db.Events
@@ -148,7 +148,7 @@ namespace WebApplication1.endpoint
                 return Results.NoContent();
             });
 
-            // DELETE: Удалить задачу, связанную с событием
+            // DELETE: Delete the task associated with the event
             app.MapDelete("/api/events/{eventId}/task", async (int eventId, AppDbContext db) =>
             {
                 var ev = await db.Events
