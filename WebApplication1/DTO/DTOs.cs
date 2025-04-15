@@ -34,16 +34,16 @@
         public string Name { get; set; } = null!;
         public string Phone { get; set; } = null!;
         public string Email { get; set; } = null!;
-        // Если пароль не передаётся, оставляем текущий
+        // If the password is not provided, keep the current one
         public string? PlainPassword { get; set; }
     }
 
     public class ParentUpdateDto
     {
         public int ParentTypeId { get; set; }
-        // Обновление данных члена системы (Member)
+        // Update system member data (Member)
         public MemberUpdateDto? Member { get; set; }
-        // Обновляем связи: список Id студентов, с которыми связан родитель
+        // Update relationships: list of student IDs associated with the parent
         public List<int>? StudentIds { get; set; }
     }
 
@@ -51,9 +51,9 @@
     {
         public DateTime BirthDay { get; set; }
         public int? GroupId { get; set; }
-        // Обновление данных члена системы (Member)
+        // Update system member data (Member)
         public MemberUpdateDto? Member { get; set; }
-        // Обновляем связи: список Id родителей, с которыми связан ученик
+        // Update relationships: list of parent IDs associated with the student
         public List<int>? ParentIds { get; set; }
     }
 

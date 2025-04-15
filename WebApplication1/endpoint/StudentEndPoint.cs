@@ -46,7 +46,7 @@ public static class StudentEndpoints
             return Results.Created($"/students/{student.Id}", student);
         });
 
-        // Обновляем student с изменением его Member и связей с родителями
+        // Update student including their Member and relationships with parents
         routes.MapPut("/students/{id}", async (int id, [FromBody] StudentUpdateDto dto, AppDbContext db) =>
         {
             var student = await db.Students
@@ -58,7 +58,7 @@ public static class StudentEndpoints
 
             if (dto.BirthDay != default)
                 student.BirthDay = dto.BirthDay;
-            // Обновляем GroupId, если значение установлено (если GroupId nullable, можно проверять на null)
+            // Update GroupId if a value is provided (if GroupId is nullable, you can check for null)
             if (dto.GroupId is not null)
                 student.GroupId = dto.GroupId;
 
@@ -78,7 +78,7 @@ public static class StudentEndpoints
 
             if (dto.ParentIds is not null)
             {
-                // Очищаем существующие связи и добавляем новые
+                // Clear existing relationships and add new ones
                 student.Parents.Clear();
                 if (dto.ParentIds.Any())
                 {
