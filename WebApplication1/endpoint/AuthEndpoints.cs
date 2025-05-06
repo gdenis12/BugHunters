@@ -3,8 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WebApplication1.Models;
 using BCrypt.Net;
+using WebApplication1.Models;
+
 using WebApplication1.DTO;
 namespace WebApplication1.endpoint
 {
@@ -156,5 +157,4 @@ namespace WebApplication1.endpoint
         public string Password { get; set; }
     }
 }
-
 
