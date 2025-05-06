@@ -89,10 +89,5 @@
         public string VenueOrLink { get; set; } = string.Empty;
     }
 
-    public class TaskDto
-    {
-        public string Name { get; set; } = null!;
-        public DateTime DateOfEnding { get; set; }
-        public string Content { get; set; } = string.Empty;
-    }
+    
 }
