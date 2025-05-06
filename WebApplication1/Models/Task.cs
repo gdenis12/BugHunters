@@ -20,6 +20,18 @@ namespace WebApplication1.Models
         [Column(TypeName = "DATETIME")]
         public DateTime DateOfEnding { get; set; }
 
-        public string Content { get; set; }
+        [Column(TypeName = "NVARCHAR(MAX)")]
+        public string Content { get; set; } = string.Empty;
+
+        public bool IsCompleted { get; set; }
+
+        [Column(TypeName = "DATETIME")]
+        public DateTime? CompletedAt { get; set; }
+
+        [Column(TypeName = "DATETIME")]
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        [Column(TypeName = "DATETIME")]
+        public DateTime? UpdatedAt { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace WebApplication1.Models
         public required DateTime BirthDay { get; set; }
 
         [ForeignKey("Group")]
-        public int? GroupId { get; set; } 
+        public int? GroupId { get; set; }
         public Group? Group { get; set; }
 
         [JsonIgnore]
