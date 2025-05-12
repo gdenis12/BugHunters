@@ -31,7 +31,7 @@ public bool IsContentHidden { get; set; }
 public string VenueOrLink { get; set; }
 
 [Required]
-[ForeignKey("Creator")]
+[ForeignKey("Member")]
 public int CreatorId { get; set; }
 public Member Creator { get; set; }
 
